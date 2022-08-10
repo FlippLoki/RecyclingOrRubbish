@@ -35,7 +35,8 @@ current_image_data = []
 # Importing Images
 rules_image = ImageTk.PhotoImage(Image.open("img/recycling rules.png"))
 
-# Dictionaries that store the image location and whether it is recycling or rubbish
+# Dictionaries that store the image location and whether it is recycling or
+# rubbish
 level1_images = {"img1": ["img/apple.jpg", "rubbish"],
                  "img2": ["img/CAN.jpg", "recycling"],
                  "img3": ["img/cream.jpg", "rubbish"],
@@ -80,10 +81,11 @@ level3_images = {"img1": ["img/newspaper.jpeg", "bundle"],
                  "img20": ["img/battery.jpg", "rubbish"]}
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Exit to main menu button
 def change_to_main():
-    global score, timer, multiplier, total_score, top_scores1, top_scores2, top_scores3
+    global score, timer, multiplier, total_score, top_scores1, top_scores2, \
+        top_scores3
 
     # Resetting all necessary variables when returning to main menu
     score = 0
@@ -110,7 +112,8 @@ def change_to_game():
     main_frame.forget()
 
 
-# Functions that run at the start of each level, starting the timer, starting the images changing, etc.
+# Functions that run at the start of each level, starting the timer, starting
+# the images changing, etc.
 def level1():
     global score, current_level, image_var
     image_var = 0
@@ -144,30 +147,38 @@ def level3():
     gameplay()
 
 
-# Main gameplay variable. Retrieves images from the dictionary and changes them after a button has been pressed
+# Main gameplay variable. Retrieves images from the dictionary and changes them
+# after a button has been pressed
 def gameplay():
     global current_image, image_var, current_image_data
 
     if current_level == "Level 1" or current_level == "Level 2":
         if image_var < 10:
             if current_level == "Level 1":
-                # image_var goes up by 1 every button press and this cycles to the next image
+                # image_var goes up by 1 every button press and this cycles to
+                # the next image
                 current_image_data = list(level1_images.values())[image_var]
 
             elif current_level == "Level 2":
                 current_image_data = list(level2_images.values())[image_var]
 
-            current_image = ImageTk.PhotoImage(Image.open(current_image_data[0]))  # Opening the image
-            gameplay_image_label.config(image=current_image)  # Displaying the image
+            # Opening the image
+            current_image = ImageTk.PhotoImage(Image.open(current_image_data[0]
+                                                          ))
+            # Displaying the image
+            gameplay_image_label.config(image=current_image)
 
         else:
-            finish_level()  # When all the images have been shown then it finishes the level
+            # When all the images have been shown then it finishes the level
+            finish_level()
 
-    # Level 3 has twice as many photos so image_var needs to be able to go up to 20
+    # Level 3 has twice as many photos so image_var needs to be
+    # able to go up to 20
     elif current_level == "Level 3":
         if image_var < 20:
             current_image_data = list(level3_images.values())[image_var]
-            current_image = ImageTk.PhotoImage(Image.open(current_image_data[0]))
+            current_image = ImageTk.PhotoImage(
+                Image.open(current_image_data[0]))
             gameplay_image_label.config(image=current_image)
 
         else:
@@ -186,7 +197,8 @@ def display_score():
     top.grab_set()
     top.config(bg="pink")
 
-    # Calculating the player's multiplier depending on how quickly they completed the level
+    # Calculating the player's multiplier depending on how quickly
+    # they completed the level
     if current_level == "Level 1" or current_level == "Level 2":
         if timer < 5:
             multiplier = 10
@@ -203,7 +215,8 @@ def display_score():
         elif timer > 74:
             multiplier = 1
 
-    # Level 3 has twice as many items of rubbish, so the multiplier is different making the maximum score still 100
+    # Level 3 has twice as many items of rubbish, so the multiplier is
+    # different making the maximum score still 100
     elif current_level == "Level 3":
         if timer < 10:
             multiplier = 5
@@ -233,14 +246,20 @@ def display_score():
         message = ""
 
     # Custom message
-    Label(top, text=f"Congratulations!\nIn {current_level} you got {score} questions correct."
-                    f"\nYour time was: {timer} seconds"
-                    f"\n\nYour total score is {total_score}."
-                    f"\n{message}",
-          font=("Calibri", 36), fg="white", bg="pink").place(relx=0.5, rely=0.35, anchor="center")
+    Label(top,
+          text=f"Congratulations!\nIn {current_level} you got {score} "
+          f"questions correct."
+          f"\nYour time was: {timer} seconds"
+          f"\n\nYour total score is {total_score}."
+          f"\n{message}",
+          font=("Calibri", 36), fg="white", bg="pink").place(relx=0.5,
+                                                             rely=0.35,
+                                                             anchor="center")
 
     # Entry box
-    entry_text = Label(top, text="Enter your name to save your score\nNo longer than 10 characters.",
+    entry_text = Label(top,
+                       text="Enter your name to save your score\nNo longer "
+                            "than 10 characters.",
                        font=("Calibri", 24), fg="blue", bg="pink")
     entry_text.place(relx=0.5, rely=0.75, anchor="center")
 
@@ -251,13 +270,15 @@ def display_score():
     def save_score():
         global name, total_score
 
-        # Any characters after the 10th will get deleted, making the maximum length for names 10 characters
+        # Any characters after the 10th will get deleted, making the maximum
+        # length for names 10 characters
         if len(name_entry.get()) > 10:
             name_entry.delete(10, END)
 
         name = name_entry.get()
 
-        # Converts all numbers to a 3 digit number, which allows them to be sorted properly. E.g. 50 becomes 050
+        # Converts all numbers to a 3 digit number, which allows them to
+        # be sorted properly. E.g. 50 becomes 050
         if total_score < 100:
             total_score = str(total_score)
             total_score = total_score.zfill(3)
@@ -272,8 +293,10 @@ def display_score():
         else:
             if current_level == "Level 1":
                 file = open("score_1.txt", "a")  # Opens file
-                file.write(str(total_score) + "  -\t" + name + "\n")  # Writes to file with spacing and new line
+                file.write(
+                    str(total_score) + "  -\t" + name + "\n")  # Writes to file
                 file.close()  # Closes file
+
             elif current_level == "Level 2":
                 file = open("score_2.txt", "a")
                 file.write(str(total_score) + "  -\t" + name + "\n")
@@ -283,7 +306,8 @@ def display_score():
                 file.write(str(total_score) + "  -\t" + name + "\n")
                 file.close()
 
-            # Exiting the top window after saving the score and returning to main menu
+            # Exiting the top window after saving the score and returning
+            # to main menu
             change_to_main()
             top.destroy()
 
@@ -295,7 +319,8 @@ def display_score():
     name_entry_button = tk.Button(top, text="Save Score", command=save_score)
     name_entry_button.place(relx=0.5, rely=0.9, anchor="center")
 
-    # Protocol for what to happen if the user closes the top window without saving their score
+    # Protocol for what to happen if the user closes the top window
+    # without saving their score
     top.wm_protocol("WM_DELETE_WINDOW", on_close)
 
 
@@ -330,37 +355,49 @@ def bundle():
 def check_rubbish():
     global score, current_image_data
 
-    # Takes the list from the current dictionary value and checks the second value in the list, to see if its "rubbish"
+    # Takes the list from the current dictionary value and checks the
+    # second value in the list, to see if its "rubbish"
     if current_image_data[1] == "rubbish":
         # GUI label that pops up and shows CORRECT
-        correct = tk.Label(gameplay_button_frame, text="CORRECT!", anchor="center", font=("Comic Sans MS", 40, "bold",),
+        correct = tk.Label(gameplay_button_frame, text="CORRECT!",
+                           anchor="center",
+                           font=("Comic Sans MS", 40, "bold",),
                            fg="green", bg="blue")
         correct.place(relx=0.5, rely=0.48, anchor="center")
-        correct.after(1000, correct.destroy)  # Destroys the correct label after 2 seconds
+
+        # Destroys the correct label after 2 seconds
+        correct.after(1000, correct.destroy)
+
         score += 1  # Increase score
         score_label.config(text=f"Score:{score}")  # Updating the score label
 
     elif current_image_data[1] != "rubbish":
         # GUI label that pops up and shows WRONG
-        wrong = tk.Label(gameplay_button_frame, text="WRONG!", anchor="center", font=("Comic Sans MS", 40, "bold",),
+        wrong = tk.Label(gameplay_button_frame, text="WRONG!", anchor="center",
+                         font=("Comic Sans MS", 40, "bold",),
                          fg="red", bg="blue", width=8)
         wrong.place(relx=0.5, rely=0.48, anchor="center")
         wrong.after(1000, wrong.destroy)
 
-    gameplay()  # Run the gameplay command again to switch the image and continue the gameplay cycle
+    # Run the gameplay command again to switch the image and
+    # continue the gameplay cycle
+    gameplay()
 
 
 def check_recycling():
     global score, current_image_data
     if current_image_data[1] == "recycling":
-        correct = tk.Label(gameplay_button_frame, text="CORRECT!", anchor="center", font=("Comic Sans MS", 40, "bold",),
+        correct = tk.Label(gameplay_button_frame, text="CORRECT!",
+                           anchor="center",
+                           font=("Comic Sans MS", 40, "bold",),
                            fg="green", bg="blue")
         correct.place(relx=0.5, rely=0.48, anchor="center")
         correct.after(1000, correct.destroy)
         score += 1
         score_label.config(text=f"Score:{score}")
     elif current_image_data[1] != "recycling":
-        wrong = tk.Label(gameplay_button_frame, text="WRONG!", anchor="center", font=("Comic Sans MS", 40, "bold",),
+        wrong = tk.Label(gameplay_button_frame, text="WRONG!", anchor="center",
+                         font=("Comic Sans MS", 40, "bold",),
                          fg="red", bg="blue", width=8)
         wrong.place(relx=0.5, rely=0.48, anchor="center")
         wrong.after(1000, wrong.destroy)
@@ -371,14 +408,17 @@ def check_recycling():
 def check_bundle():
     global score, current_image_data
     if current_image_data[1] == "bundle":
-        correct = tk.Label(gameplay_button_frame, text="CORRECT!", anchor="center", font=("Comic Sans MS", 40, "bold",),
+        correct = tk.Label(gameplay_button_frame, text="CORRECT!",
+                           anchor="center",
+                           font=("Comic Sans MS", 40, "bold",),
                            fg="green", bg="blue")
         correct.place(relx=0.5, rely=0.48, anchor="center")
         correct.after(1000, correct.destroy)
         score += 1
         score_label.config(text=f"Score:{score}")
     elif current_image_data[1] != "bundle":
-        wrong = tk.Label(gameplay_button_frame, text="WRONG!", anchor="center", font=("Comic Sans MS", 40, "bold",),
+        wrong = tk.Label(gameplay_button_frame, text="WRONG!", anchor="center",
+                         font=("Comic Sans MS", 40, "bold",),
                          fg="red", bg="blue", width=8)
         wrong.place(relx=0.5, rely=0.48, anchor="center")
         wrong.after(1000, wrong.destroy)
@@ -394,7 +434,8 @@ def update_time():
         # Update the time label box with the current time
         time_label.configure(text=f"Time:{timer}")
 
-        # Call the update_time() function after 1 second to keep the clock ticking
+        # Call the update_time() function after 1 second to keep
+        # the clock ticking
         root.after(1000, update_time)
     else:
         pass
@@ -423,13 +464,18 @@ def change_to_score():
     main_frame.forget()
 
 
-# Function that reads the text files with the top scores and then sorts them in order of highest score
+# Function that reads the text files with the top scores and
+# then sorts them in order of highest score
 def scoreboard_read():
-    global top_scores1, top_scores2, top_scores3, sorted_scores1, sorted_scores2, sorted_scores3
+    global top_scores1, top_scores2, top_scores3, sorted_scores1, \
+        sorted_scores2, sorted_scores3
 
-    file = open("score_1.txt", "r")  # Opens file
-    read_file = file.readlines()  # Reads file and stores to variable
-    sorted_scores1 = sorted(read_file, reverse=True)  # Sorts the var by highest number to lowest, assigns to new var
+    # Opens file
+    file = open("score_1.txt", "r")
+    # Reads file and stores to variable
+    read_file = file.readlines()
+    # Sorts the var by highest number to lowest, assigns to new var
+    sorted_scores1 = sorted(read_file, reverse=True)
 
     file = open("score_2.txt", "r")
     read_file = file.readlines()
@@ -455,61 +501,78 @@ def scoreboard_read():
     level3_scores_scores_label.config(text=f"{top_scores3}")
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~MAIN MENU GUI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~MAIN MENU GUI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Title section
-title_frame = tk.Frame(main_frame, bg="purple", highlightthickness=5, highlightbackground="black")
+title_frame = tk.Frame(main_frame, bg="purple", highlightthickness=5,
+                       highlightbackground="black")
 title_frame.grid(row=0, column=0, columnspan=2, sticky="NSEW")
 
-title_text_frame = tk.LabelFrame(title_frame, borderwidth=0, highlightthickness=0)
+title_text_frame = tk.LabelFrame(title_frame, borderwidth=0,
+                                 highlightthickness=0)
 title_text_frame.place(relx=0.5, rely=0.45, anchor="center")
 
-title_text = tk.Label(title_text_frame, text="Recycling or Rubbish?", font=("Helvetica", 55, "bold",), fg="#ffffff",
+title_text = tk.Label(title_text_frame, text="Recycling or Rubbish?",
+                      font=("Helvetica", 55, "bold",), fg="#ffffff",
                       background="purple")
 title_text.grid()
 
-scoreboard_button = tk.Button(title_frame, text="High Scores", font=("Helvetica", 20, "bold"),
+scoreboard_button = tk.Button(title_frame, text="High Scores",
+                              font=("Helvetica", 20, "bold"),
                               command=change_to_score)
 scoreboard_button.place(relx=0.915, rely=0.5, anchor="center")
 
 # Rules Section
-rules_frame = tk.Frame(main_frame, bg="red", highlightthickness=5, highlightbackground="black")
+rules_frame = tk.Frame(main_frame, bg="red", highlightthickness=5,
+                       highlightbackground="black")
 rules_frame.grid(row=1, column=0, sticky="NSEW")
 
-rules_title_frame = tk.LabelFrame(rules_frame, background="red", borderwidth=0, highlightthickness=0)
+rules_title_frame = tk.LabelFrame(rules_frame, background="red", borderwidth=0,
+                                  highlightthickness=0)
 rules_title_frame.place(relx=0.5, rely=0.1, anchor="center")
 
-rules_title = tk.Label(rules_title_frame, text="Instructions", font=("Helvetica", 40, "bold", "underline"),
+rules_title = tk.Label(rules_title_frame, text="Instructions",
+                       font=("Helvetica", 40, "bold", "underline"),
                        bg="red", fg="#ffffff")
 rules_title.grid()
 
-rules_text_frame = tk.LabelFrame(rules_frame, background="purple", borderwidth=0, highlightthickness=0)
+rules_text_frame = tk.LabelFrame(rules_frame, background="purple",
+                                 borderwidth=0, highlightthickness=0)
 rules_text_frame.place(relx=0.5, rely=0.6, anchor="center")
 
-rules_text = tk.Label(rules_text_frame, text="You will be presented with items of trash and\n it is up to you to "
-                                             "decide whether\nit gets recycled or put in the rubbish.\n\n Level 3 is a "
-                                             "special level\n which takes place on Great Barrier Island.\n There are"
-                                             " some different rules on Great Barrier\nIsland so watch out for that!"
-                                             "\n\n Your total score will also be affected by your time!\nBe quick and"
-                                             " accurate.",
+rules_text = tk.Label(rules_text_frame,
+                      text="You will be presented with items of trash and\n it"
+                           " is up to you to decide whether\nit gets recycled "
+                           "or put in the rubbish.\n\n Level 3 is a special "
+                           "level\n which takes place on Great Barrier Island."
+                           "\n There are some different rules on Great Barrier"
+                           "\nIsland so watch out for that!\n\n Your total "
+                           "score will also be affected by your time!\nBe "
+                           "quick and accurate.",
                       font=("Helvetica", 24), bg="red", fg="#ffffff")
 rules_text.grid()
 
 # Levels Section
-levels_frame = tk.LabelFrame(main_frame, bg="yellow", highlightthickness=5, highlightbackground="black")
+levels_frame = tk.LabelFrame(main_frame, bg="yellow", highlightthickness=5,
+                             highlightbackground="black")
 levels_frame.grid(row=1, column=1, sticky="NSEW")
 
-levels_title_frame = tk.LabelFrame(levels_frame, bg="yellow", borderwidth=0, highlightthickness=0)
+levels_title_frame = tk.LabelFrame(levels_frame, bg="yellow", borderwidth=0,
+                                   highlightthickness=0)
 levels_title_frame.place(relx=0.5, rely=0.1, anchor="center")
 
-levels_title = tk.Label(levels_title_frame, text="Levels", font=("Helvetica", 35, "bold", "underline"), bg="yellow",
+levels_title = tk.Label(levels_title_frame, text="Levels",
+                        font=("Helvetica", 35, "bold", "underline"),
+                        bg="yellow",
                         fg="#ffffff")
 levels_title.grid()
 
 # Buttons for the different levels
-level1_button = tk.Button(levels_frame, text="Level 1", font=("Helvetica", 24, "bold"), command=level1)
+level1_button = tk.Button(levels_frame, text="Level 1",
+                          font=("Helvetica", 24, "bold"), command=level1)
 level1_button.place(relx=0.5, rely=0.25, anchor="center")
 
-level2_button = tk.Button(levels_frame, text="Level 2", font=("Helvetica", 24, "bold"), command=level2)
+level2_button = tk.Button(levels_frame, text="Level 2",
+                          font=("Helvetica", 24, "bold"), command=level2)
 level2_button.place(relx=0.5, rely=0.5, anchor="center")
 
 level3_button = tk.Button(levels_frame, text="Level 3:\nGreat Barrier\nIsland",
@@ -522,31 +585,38 @@ main_frame.grid_rowconfigure(1, weight=4)
 main_frame.grid_columnconfigure(0, weight=3)
 main_frame.grid_columnconfigure(1, weight=1)
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GAMEPLAY GUI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GAMEPLAY GUI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Title Section
-game_title_frame = tk.Frame(game_frame, bg="purple", highlightthickness=5, highlightbackground="black")
+game_title_frame = tk.Frame(game_frame, bg="purple", highlightthickness=5,
+                            highlightbackground="black")
 game_title_frame.grid(row=0, column=0, columnspan=2, sticky="NSEW")
 
-title_text_frame = tk.LabelFrame(game_title_frame, borderwidth=0, highlightthickness=0)
+title_text_frame = tk.LabelFrame(game_title_frame, borderwidth=0,
+                                 highlightthickness=0)
 title_text_frame.place(relx=0.5, rely=0.45, anchor="center")
 
-title_text = tk.Label(title_text_frame, text="Recycling or Rubbish?", font=("Helvetica", 55, "bold",), fg="#ffffff",
+title_text = tk.Label(title_text_frame, text="Recycling or Rubbish?",
+                      font=("Helvetica", 55, "bold",), fg="#ffffff",
                       background="purple")
 title_text.grid()
 
-exit_button = tk.Button(game_title_frame, text="Exit to\nMain Menu", font=("Helvetica", 20, "bold"),
+exit_button = tk.Button(game_title_frame, text="Exit to\nMain Menu",
+                        font=("Helvetica", 20, "bold"),
                         command=change_to_main)
 exit_button.place(relx=0.915, rely=0.5, anchor="center")
 
-score_label = tk.Label(game_title_frame, text=f"Score:{score}", font=("Helvetica", 32, "bold"),
+score_label = tk.Label(game_title_frame, text=f"Score:{score}",
+                       font=("Helvetica", 32, "bold"),
                        bg="purple", fg="white")
 score_label.place(relx=0.03, rely=0.1)
 
-time_label = tk.Label(game_title_frame, text=f"Time:{timer}", font=("Helvetica", 32, "bold"), bg="purple", fg="white")
+time_label = tk.Label(game_title_frame, text=f"Time:{timer}",
+                      font=("Helvetica", 32, "bold"), bg="purple", fg="white")
 time_label.place(relx=0.03, rely=0.5)
 
 # Rules Section
-game_rules = tk.Frame(game_frame, bg="red", highlightthickness=5, highlightbackground="black")
+game_rules = tk.Frame(game_frame, bg="red", highlightthickness=5,
+                      highlightbackground="black")
 game_rules.grid(row=2, column=0, columnspan=2, sticky="NSEW")
 
 game_rules_img = tk.Label(game_rules)
@@ -554,7 +624,8 @@ game_rules_img.place(relx=0.5, rely=0.5, anchor="center")
 game_rules_img.config(image=rules_image)
 
 # Image Section
-gameplay_image_frame = tk.Frame(game_frame, bg="yellow", highlightthickness=5, highlightbackground="black")
+gameplay_image_frame = tk.Frame(game_frame, bg="yellow", highlightthickness=5,
+                                highlightbackground="black")
 gameplay_image_frame.grid(row=1, column=0, sticky="NSEW")
 gameplay_image_frame.grid_propagate(False)  # Makes the frame not resizable
 
@@ -563,18 +634,22 @@ gameplay_image_label.place(relx=0.5, rely=0.5, anchor="center")
 gameplay_image_label.grid_propagate(False)
 
 # Button Section
-gameplay_button_frame = tk.Frame(game_frame, bg="blue", highlightthickness=5, highlightbackground="black")
+gameplay_button_frame = tk.Frame(game_frame, bg="blue", highlightthickness=5,
+                                 highlightbackground="black")
 gameplay_button_frame.grid(row=1, column=1, sticky="NSEW")
 
-rubbish_button = tk.Button(gameplay_button_frame, text="Rubbish", font=("Helvetica", 20, "bold"),
+rubbish_button = tk.Button(gameplay_button_frame, text="Rubbish",
+                           font=("Helvetica", 20, "bold"),
                            command=rubbish)
 rubbish_button.place(relx=0.5, rely=0.33, anchor="center")
 
-recycling_button = tk.Button(gameplay_button_frame, text="Recycling", font=("Helvetica", 20, "bold"),
+recycling_button = tk.Button(gameplay_button_frame, text="Recycling",
+                             font=("Helvetica", 20, "bold"),
                              command=recycling)
 recycling_button.place(relx=0.5, rely=0.66, anchor="center")
 
-bundle_button = tk.Button(gameplay_button_frame, text="Bundle and Bag", font=("Helvetica", 20, "bold"),
+bundle_button = tk.Button(gameplay_button_frame, text="Bundle and Bag",
+                          font=("Helvetica", 20, "bold"),
                           command=bundle)
 bundle_button.place(relx=0.5, rely=0.8, anchor="center")
 
@@ -585,50 +660,64 @@ game_frame.grid_rowconfigure(2, weight=1)
 game_frame.grid_columnconfigure(0, weight=3)
 game_frame.grid_columnconfigure(1, weight=1)
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SCOREBOARD GUI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SCOREBOARD GUI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Title Section
-score_title_frame = tk.Frame(score_frame, bg="purple", highlightthickness=5, highlightbackground="black")
+score_title_frame = tk.Frame(score_frame, bg="purple", highlightthickness=5,
+                             highlightbackground="black")
 score_title_frame.grid(row=0, column=0, sticky="NSEW")
 
-title_text_frame = tk.LabelFrame(score_title_frame, borderwidth=0, highlightthickness=0)
+title_text_frame = tk.LabelFrame(score_title_frame, borderwidth=0,
+                                 highlightthickness=0)
 title_text_frame.place(relx=0.5, rely=0.45, anchor="center")
 
-title_text = tk.Label(title_text_frame, text="Recycling or Rubbish?", font=("Helvetica", 55, "bold",), fg="#ffffff",
+title_text = tk.Label(title_text_frame, text="Recycling or Rubbish?",
+                      font=("Helvetica", 55, "bold",), fg="#ffffff",
                       background="purple")
 title_text.grid()
 
-exit_button = tk.Button(score_title_frame, text="Exit to\nMain Menu", font=("Helvetica", 20, "bold"),
+exit_button = tk.Button(score_title_frame, text="Exit to\nMain Menu",
+                        font=("Helvetica", 20, "bold"),
                         command=change_to_main)
 exit_button.place(relx=0.915, rely=0.5, anchor="center")
 
 # High Scores Section
-high_scores_frame = tk.Frame(score_frame, bg="hot pink", highlightthickness=5, highlightbackground="black")
+high_scores_frame = tk.Frame(score_frame, bg="hot pink", highlightthickness=5,
+                             highlightbackground="black")
 high_scores_frame.grid(row=1, column=0, sticky="NSEW")
 
-level1_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black", text=str("Top 10 Scores for Level One\n"
-                                                                                     f"Score\tName"),
-                               font=("Helvetica", 23, "underline"), justify="left")
+level1_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black",
+                               text=str("Top 10 Scores for Level One\n"
+                                        f"Score\tName"),
+                               font=("Helvetica", 23, "underline"),
+                               justify="left")
 level1_scores_label.grid(row=0, column=0)
 
-level1_scores_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black", text=f"{top_scores1}",
+level1_scores_scores_label = tk.Label(high_scores_frame, bg="hotpink",
+                                      fg="black", text=f"{top_scores1}",
                                       font=("Helvetica", 20), justify="left")
 level1_scores_scores_label.grid(row=1, column=0, sticky="NEW")
 
-level2_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black", text=f"Top 10 Scores for Level Two\n"
-                                                                                 f"Score\tName",
-                               font=("Helvetica", 23, "underline"), justify="left")
+level2_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black",
+                               text=f"Top 10 Scores for Level Two\n"
+                               f"Score\tName",
+                               font=("Helvetica", 23, "underline"),
+                               justify="left")
 level2_scores_label.grid(row=0, column=1)
 
-level2_scores_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black", text=f"{top_scores2}",
+level2_scores_scores_label = tk.Label(high_scores_frame, bg="hotpink",
+                                      fg="black", text=f"{top_scores2}",
                                       font=("Helvetica", 20), justify="left")
 level2_scores_scores_label.grid(row=1, column=1, sticky="NEW")
 
-level3_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black", text=f"Top 10 Scores for Level Three"
-                                                                                 f"\nScore\tName",
-                               font=("Helvetica", 23, "underline"), justify="left")
+level3_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black",
+                               text=f"Top 10 Scores for Level Three"
+                               f"\nScore\tName",
+                               font=("Helvetica", 23, "underline"),
+                               justify="left")
 level3_scores_label.grid(row=0, column=2)
 
-level3_scores_scores_label = tk.Label(high_scores_frame, bg="hotpink", fg="black", text=f"{top_scores3}",
+level3_scores_scores_label = tk.Label(high_scores_frame, bg="hotpink",
+                                      fg="black", text=f"{top_scores3}",
                                       font=("Helvetica", 20), justify="left")
 level3_scores_scores_label.grid(row=1, column=2, sticky="NEW")
 
